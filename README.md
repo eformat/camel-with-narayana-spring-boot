@@ -77,8 +77,28 @@ Get the Result and you will see the user "halt" will be created
 
 4. OpenShift
 
-Running on OpenShift
+Running on OpenShift (embedded amq7 broker)
 
     oc new-project camel-narayana --display-name='Camel Narayana' --description='Camel Narayana'
     oc policy add-role-to-user view --serviceaccount=default -n $(oc project -q)
     mvn fabric8:deploy
+    oc expose svc camel-with-narayana-spri
+
+5. Run on OpenShift with AMQ7 broker (native)
+
+As above in (4) then
+
+    -- build artemis broker
+    oc project openshift
+    oc process -f https://raw.githubusercontent.com/RHsyseng/amq7/master/S2I-Base-Image/yaml_templates/amq_image_template.yaml | oc create -f -
+    oc start-build amq7-image --follow
+    
+    -- deploy artemis broker and redeoply app with new properties  
+    oc project camel-narayana
+    oc new-app -f ./amq_single_template.yaml
+    cp src/main/resources/application-ext-amq.properties src/main/resources/application.properties
+    mvn fabric8:deploy
+    
+    -- annoying, but hawtio only available on http for now
+    oc port-forward amq-single-9-bqnzf 8161:8161
+    http://localhost:8161/hawtio
