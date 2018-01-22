@@ -1,10 +1,10 @@
 Narayana Spring Boot camel example
 ============================
-Author: Amos Feng
-Level: Intermediate
 Technologies: JTA, JMS, JPA, Camel, Spring Boot
 Summary: This example shows how to use the camel with the narayana in Spring Boot
 
+Forked From https://github.com/jbosstm/quickstart
+- Updated for supported FIS2.0 on OpenShift libraries
 
 What is it?
 -----------
