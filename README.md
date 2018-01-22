@@ -100,5 +100,5 @@ As above in (4) then
     mvn fabric8:deploy
     
     -- annoying, but hawtio only available on http for now
-    oc port-forward amq-single-9-bqnzf 8161:8161
+    oc port-forward $(oc get pod -l app=amq-single --template='{{range .items}}{{.metadata.name}}{{end}}') 8161:8161
     http://localhost:8161/hawtio
